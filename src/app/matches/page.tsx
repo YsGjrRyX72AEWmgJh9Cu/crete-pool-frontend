@@ -9,7 +9,7 @@ export default function MatchesPage() {
   async function loadMatches() {
 
     const response = await fetch(
-      "http://127.0.0.1:8000/matches",
+      "https://crete-pool-backend-production.up.railway.app/matches",
       {
         cache: "no-store",
       }
@@ -33,7 +33,7 @@ export default function MatchesPage() {
   if (!confirmed) return;
 
   const response = await fetch(
-    `http://127.0.0.1:8000/match/${id}`,
+    `https://crete-pool-backend-production.up.railway.app/match/${id}`,
     {
       method: "DELETE",
     }

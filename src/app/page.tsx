@@ -20,7 +20,7 @@ export default function Home() {
 
   async function loadLeaderboard() {
     const response = await fetch(
-      "http://127.0.0.1:8000/leaderboard",
+      "https://crete-pool-backend-production.up.railway.app/leaderboard",
       {
         cache: "no-store",
       }
@@ -32,7 +32,7 @@ export default function Home() {
 
   async function loadPlayers() {
     const response = await fetch(
-      "http://127.0.0.1:8000/players",
+      "https://crete-pool-backend-production.up.railway.app/players",
       {
         cache: "no-store",
       }
@@ -57,7 +57,7 @@ export default function Home() {
     e.preventDefault();
 
     const response = await fetch(
-      "http://127.0.0.1:8000/submit-match",
+      "https://crete-pool-backend-production.up.railway.app/submit-match",
       {
         method: "POST",
         headers: {
