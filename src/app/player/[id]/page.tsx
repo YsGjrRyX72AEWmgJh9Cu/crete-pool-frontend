@@ -30,7 +30,7 @@ export default function PlayerPage({
   async function loadPlayer() {
 
     const response = await fetch(
-      `http://127.0.0.1:8000/player/${playerId}`
+      `https://crete-pool-backend-production.up.railway.app/player/${playerId}`
     );
 
     const data = await response.json();
@@ -45,7 +45,7 @@ export default function PlayerPage({
   async function loadHistory() {
 
     const response = await fetch(
-      `http://127.0.0.1:8000/player/${playerId}/rating-history`
+      `https://crete-pool-backend-production.up.railway.app/player/${playerId}/rating-history`
     );
 
     const data = await response.json();

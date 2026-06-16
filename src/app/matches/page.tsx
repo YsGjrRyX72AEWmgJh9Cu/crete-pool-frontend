@@ -3,132 +3,50 @@
 import { useEffect, useState } from "react";
 
 export default function MatchesPage() {
-
-  const [matches, setMatches] = useState<any[]>([]);
-
-  async function loadMatches() {
-
-    const response = await fetch(
-      "https://crete-pool-backend-production.up.railway.app/matches",
-      {
-        cache: "no-store",
-      }
-    );
-
-    const data = await response.json();
-
-    setMatches(data);
-  }
+  const [matches, setMatches] = useState([]);
 
   useEffect(() => {
     loadMatches();
   }, []);
 
-  async function deleteMatch(id: number) {
+  async function loadMatches() {
+    const res = await fetch(
+      "https://crete-pool-backend-production.up.railway.app/matches"
+    );
 
-  const confirmed = confirm(
-    "Delete this match?"
-  );
+    const data = await res.json();
 
-  if (!confirmed) return;
-
-  const response = await fetch(
-    `https://crete-pool-backend-production.up.railway.app/match/${id}`,
-    {
-      method: "DELETE",
-    }
-  );
-
-  if (response.ok) {
-
-    alert("Match deleted!");
-
-    loadMatches();
-
-  } else {
-
-    alert("Failed to delete match");
-
+    setMatches(data);
   }
-}
 
   return (
-    <main className="min-h-screen bg-black text-white p-8">
+    <main className="min-h-screen bg-black text-white p-10">
+      <h1 className="text-5xl font-bold mb-8">Match History</h1>
 
-      <div className="max-w-5xl mx-auto">
-
-        <h1 className="text-5xl font-bold mb-3">
-          Match History
-        </h1>
-
-        <p className="text-zinc-400 mb-10">
-          Recent matches from Crete Pool Rating
-        </p>
-
-        <div className="space-y-5">
-
-          {matches.map((match) => (
-
-            <div
-              key={match.id}
-              className="bg-zinc-900 rounded-3xl p-6"
-            >
-
-              <div className="flex justify-between items-center">
-
-                <div>
-
-                  <p className="text-2xl font-bold">
-                    {match.player_a_name}
-                  </p>
-
-                  <p className="text-zinc-500">
-                    vs
-                  </p>
-
-                  <p className="text-2xl font-bold">
-                    {match.player_b_name}
-                  </p>
-
-                </div>
-
-                <div className="text-right">
-
-                  <p className="text-4xl font-bold">
-                    {match.score_a}
-                    {" - "}
-                    {match.score_b}
-                  </p>
-
-                  <p className="text-zinc-400 mt-2">
-                    Race to {match.race_to}
-                  </p>
-
-                  <p className="text-zinc-500">
-                    {match.game_type}
-                  </p>
-
-                  <button
-                    onClick={() =>
-                      deleteMatch(match.id)
-                    }
-                    className="mt-4 bg-red-500 hover:bg-red-600 px-4 py-2 rounded-xl font-bold transition"
-                  >
-                    Delete
-                  </button>
-
-                </div>
-
-              </div>
-
+      <div className="space-y-4">
+        {matches.map((match: any) => (
+          <div
+            key={match.id}
+            className="bg-zinc-900 p-6 rounded-2xl"
+          >
+            <div className="text-2xl font-bold">
+              {match.player_a_name} vs {match.player_b_name}
             </div>
 
-          ))}
+            <div className="text-zinc-400 mt-2">
+              {match.score_a} - {match.score_b}
+            </div>
 
-        </div>
+            <div className="mt-2 text-green-400">
+              Winner: {match.winner_name}
+            </div>
 
+            <div className="mt-2 text-sm text-zinc-500">
+              {match.game_type}
+            </div>
+          </div>
+        ))}
       </div>
-
     </main>
   );
 }

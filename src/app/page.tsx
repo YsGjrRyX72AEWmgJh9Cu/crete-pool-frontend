@@ -127,6 +127,11 @@ export default function Home() {
 
                   <div>
                     <p className="text-2xl font-semibold">
+
+                       {index === 0 && "🥇 "}
+                       {index === 1 && "🥈 "}
+                       {index === 2 && "🥉 "}
+
                       #{index + 1} {player.full_name}
                     </p>
 
@@ -157,6 +162,7 @@ export default function Home() {
 </div>
 
                   <div className="text-right">
+
                     <p className="text-2xl font-bold">
                       {player.current_rating}
                     </p>
@@ -164,6 +170,51 @@ export default function Home() {
                     <p className="text-zinc-400">
                       rating
                     </p>
+
+                    <p className="text-green-400 text-sm mt-1">
+                      {player.wins}W - {player.losses}L
+                    </p>
+
+                    <p className="mt-2 text-xl">
+
+                      {player.movement === "up" && "⬆️"}
+                      {player.movement === "down" && "⬇️"}
+                      {player.movement === "same" && "➖"}
+
+                    </p>
+                    <p className="text-zinc-400 text-sm mt-1">
+
+                      {player.matches_played > 0
+                        ? Math.round(
+                            (player.wins /
+                              player.matches_played) * 100
+                          )
+                        : 0}
+                      % WR
+
+                    </p>
+                    
+                  <div className="flex gap-1 mt-2 justify-end">
+
+                    {player.recent_form?.map(
+                      (result: string, i: number) => (
+
+                        <div
+                          key={i}
+                          className={
+                            result === "W"
+                              ? "w-6 h-6 rounded-full bg-green-500 text-black text-xs flex items-center justify-center font-bold"
+                              : "w-6 h-6 rounded-full bg-red-500 text-white text-xs flex items-center justify-center font-bold"
+                          }
+                        >
+                          {result}
+                        </div>
+
+                      )
+                    )}
+
+                  </div>
+
                   </div>
 
                 </div>

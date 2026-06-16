@@ -19,8 +19,8 @@ export default function AdminPlayersPage() {
     const response = await fetch(
 
   editingPlayer
-    ? `http://127.0.0.1:8000/player/${editingPlayer.id}`
-    : "http://127.0.0.1:8000/create-player",
+    ? `https://crete-pool-backend-production.up.railway.app/player/${editingPlayer.id}`
+    : "https://crete-pool-backend-production.up.railway.app/create-player",
 
   {
     method: editingPlayer ? "PUT" : "POST",
@@ -69,7 +69,7 @@ loadPlayers();
     if (!confirmed) return;
 
     const response = await fetch(
-      `http://127.0.0.1:8000/player/${id}`,
+      `https://crete-pool-backend-production.up.railway.app/player/${id}`,
       {
         method: "DELETE",
       }
@@ -89,7 +89,7 @@ loadPlayers();
   async function loadPlayers() {
 
   const response = await fetch(
-    "http://127.0.0.1:8000/players"
+    "https://crete-pool-backend-production.up.railway.app/players"
   );
 
   const data = await response.json();
