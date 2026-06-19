@@ -10,6 +10,8 @@ export default function TournamentDetailsPage() {
 
   const [tournamentPlayers, setTournamentPlayers] = useState<any[]>([]);
 
+  const [matches, setMatches] = useState<any[]>([]);
+
   async function loadTournament() {
 
     const path = window.location.pathname;
@@ -44,6 +46,15 @@ export default function TournamentDetailsPage() {
     setTournamentPlayers(
       tournamentPlayersData
     );
+
+    const matchesResponse = await fetch(
+      `http://127.0.0.1:8000/tournament/${id}/matches`
+    );
+
+    const matchesData =
+      await matchesResponse.json();
+
+    setMatches(matchesData);
 
     setTournament(foundTournament);
   }
@@ -191,6 +202,44 @@ export default function TournamentDetailsPage() {
 
 </div>
 
+<div className="mt-10 bg-zinc-900 rounded-3xl p-6 max-w-2xl">
+
+  <h2 className="text-3xl font-bold mb-6">
+    Tournament Matches
+  </h2>
+
+  <div className="space-y-3">
+
+    {matches.map((match) => (
+
+      <div
+        key={match.id}
+        className="bg-zinc-800 rounded-2xl p-4"
+      >
+
+        <p className="font-bold text-xl">
+          {match.player_a_name}
+        </p>
+
+        <p className="text-center text-zinc-400 my-2">
+          VS
+        </p>
+
+        <p className="font-bold text-xl">
+          {match.player_b_name}
+        </p>
+
+        <p className="mt-3 text-green-400">
+          {match.status}
+        </p>
+
+      </div>
+
+    ))}
+
+  </div>
+
+</div>
     </main>
   );
 }
