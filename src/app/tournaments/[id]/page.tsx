@@ -12,6 +12,13 @@ export default function TournamentDetailsPage() {
 
   const [matches, setMatches] = useState<any[]>([]);
 
+  const [scoreA, setScoreA] = useState(0);
+
+  const [scoreB, setScoreB] = useState(0);
+
+  const [selectedMatch, setSelectedMatch] =
+    useState<number | null>(null);
+
   async function loadTournament() {
 
     const path = window.location.pathname;
@@ -96,6 +103,63 @@ export default function TournamentDetailsPage() {
       alert("Error adding player");
     }
   }
+  
+async function generateBracket() {
+
+  const path = window.location.pathname;
+
+  const tournamentId = path.split("/").pop();
+
+  const response = await fetch(
+    `http://127.0.0.1:8000/tournament/${tournamentId}/generate-bracket`,
+    {
+      method: "POST",
+    }
+  );
+
+  if (response.ok) {
+
+    alert("Bracket generated");
+
+    loadTournament();
+
+  } else {
+
+    alert("Error generating bracket");
+  }
+}
+
+async function submitTournamentResult(
+  matchId: number
+) {
+
+  const response = await fetch(
+    `http://127.0.0.1:8000/tournament-match/${matchId}/submit`,
+    {
+      method: "POST",
+
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      body: JSON.stringify({
+        score_a: scoreA,
+        score_b: scoreB,
+      }),
+    }
+  );
+
+  if (response.ok) {
+
+    alert("Result submitted");
+
+    loadTournament();
+
+  } else {
+
+    alert("Error submitting result");
+  }
+}
 
   if (!tournament) {
 
@@ -126,6 +190,13 @@ export default function TournamentDetailsPage() {
         <p className="mt-4 inline-block bg-green-500/20 text-green-400 px-4 py-2 rounded-full">
           {tournament.status}
         </p>
+
+        <button
+          onClick={generateBracket}
+          className="block mt-6 bg-white text-black px-6 py-3 rounded-xl font-bold"
+        >
+          Generate Bracket
+        </button>
 
       </div>
 
@@ -232,6 +303,41 @@ export default function TournamentDetailsPage() {
         <p className="mt-3 text-green-400">
           {match.status}
         </p>
+
+        {match.status === "pending" && (
+
+  <div className="mt-4 space-y-3">
+
+    <input
+      type="number"
+      placeholder="Score A"
+      onChange={(e) =>
+        setScoreA(Number(e.target.value))
+      }
+      className="w-full bg-zinc-700 p-3 rounded-xl"
+    />
+
+    <input
+      type="number"
+      placeholder="Score B"
+      onChange={(e) =>
+        setScoreB(Number(e.target.value))
+      }
+      className="w-full bg-zinc-700 p-3 rounded-xl"
+    />
+
+    <button
+      onClick={() =>
+        submitTournamentResult(match.id)
+      }
+      className="bg-white text-black px-4 py-2 rounded-xl font-bold"
+    >
+      Submit Result
+    </button>
+
+  </div>
+
+)}
 
       </div>
 
